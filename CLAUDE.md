@@ -43,37 +43,38 @@
   (04-Nov-2026) жаловался, что India-команда «чинит по комментариям Jan», не делает RCA
   и не ищет паттерны. Реестр должен это закрывать.
 - Язык содержимого: английский (коллеги NL/IN), общение со Stas на русском.
-- Листы: `Summary` (KPI на формулах COUNTIF/COUNTIFS), `Case Register` (1 строка = 1 кейс),
-  `Actions` (действия: owner, due, status), `Patterns & RCA` (P1–P5), `Guide`, `Lists`
-  (выпадающие списки, базовый URL трекера в `Lists!B3`, дата обновления в `Lists!B4`).
-- ID кейсов: `ADY-001`… (на 05-Nov-2026 последний ID ADY-013). Actions: `A-01`…
-- Колонки Case Register: ID, Title, Category, Type, Hotel/Property, Priority, Status,
-  Initiated, Initiated by, Question/Issue summary, Response/Current answer, Root cause,
-  RCA status, Action plan/Fix, Next step, Owner, Involved, Waiting on, Last update,
-  Target date, Closed date, Days open*, Days since update*, Work item type, Work item #,
-  Work item link*, Sprint/Release, Recurring?, Pattern, Related cases, Related Status
-  Update item, Source e-mail (Drive, hyperlink), Notes. (* = формулы, не перезаписывать.)
+- **Главное требование Stas: лаконично, конкретно, понятно.** По строке нужно за секунды
+  понять: в чём проблема, решена ли, кто решил, какая root cause; если не решена, то
+  чего ждём, что блокирует, какой следующий шаг. Каждая ячейка — 1–2 коротких
+  предложения, без пересказа переписки, без лишних деталей и колонок. Не добавляй
+  обратно удалённые листы и колонки без просьбы.
+- Листы (версия от 05-Nov-2026, согласована со Stas): только `Case Register` и `Actions`.
+  Summary, Patterns, Guide и Lists Stas удалил. Формул в файле нет.
+- Колонки Case Register (14): ID, Problem, Category, Priority, Status, Initiated, Owner,
+  Summary, Answer / Resolution, Root cause, RCA, Waiting on / Blocker, Next step, Last update.
+  Колонку Answer / Resolution для решённого кейса заполняй так: как исправили и кто.
+- Actions: #, Case ID, Action, Owner, Due date, Status (Open / Proposed / In progress /
+  Done / Cancelled).
+- ID кейсов — числа 1, 2, 3… (на 05-Nov-2026 последний ID 13). В Actions `Case ID` — тот же номер.
+- Выпадающие списки заданы прямо в валидации (без листа Lists): Status, Priority, RCA, Category.
 - Статусы: New, Awaiting response, In analysis, Awaiting decision, In progress,
   Waiting on Adyen, Fix deployed - verify, Closed. Кейс закрывается только при
-  верифицированном фиксе и `RCA status = Confirmed` (или N/A для вопросов и решений).
-- Паттерны: P1 надёжность загрузки данных (webhooks/payout reports, нет идемпотентности
-  и мониторинга), P2 нет единой даты (CreatedOn/ReportDate/PayoutDate…), P3 нет общего
-  референса (PSP Reference), P4 не определены бизнес-процессы (chargebacks, FX, invoicing),
-  P5 PCI/токенизация.
+  верифицированном фиксе и `RCA = Confirmed` (или N/A для вопросов и решений).
+- Повторяющиеся темы держи в голове при анализе (в файл отдельным листом не выносить):
+  надёжность загрузки данных (webhooks/payout reports), разные даты
+  (ReportDate/PayoutDate/CreatedOn), нет общего референса (PSP Reference),
+  не определены бизнес-процессы (chargebacks, FX), PCI/токенизация.
 
 ### Как обновлять реестр
 
 1. Найди новые файлы в `Email cases` (по `createdTime`) и прочитай их (см. выше).
-2. Новый тред → новая строка `ADY-0NN`. Продолжение существующего треда → обнови
-   Response, Status, Last update, Next step, Root cause / RCA status того же кейса.
-3. Правь xlsx через openpyxl (`load_workbook`, без `data_only`), стиль копируй с
-   соседней строки. Формулы в колонках Days open / Days since update / Work item link
-   и на листе Summary не трогай; при добавлении строк за пределами форматированного
-   диапазона (до строки 150) протяни формулы, валидацию и автофильтр.
-4. Обнови `Lists!B4` (Last updated) и привяжи кейс к Pattern.
-5. Запусти recalc (скилл xlsx, `scripts/recalc.py`), проверь 0 ошибок, закоммить и
-   отправь файл пользователю. В ответе дай короткую сводку изменений (новые кейсы,
-   смена статусов, что без ответа).
+   Если Stas прислал свою версию xlsx — бери её за основу (он мог править вручную).
+2. Новый тред → новая строка со следующим номером. Продолжение существующего треда →
+   обнови Answer / Resolution, Status, Root cause, RCA, Waiting on, Next step, Last update.
+3. Правь xlsx через openpyxl, стиль копируй с соседней строки (Arial 10, рамки, перенос
+   текста, шапка #1F3864). Форматирование подготовлено до строки 150.
+4. Закоммить и отправь файл пользователю. В ответе дай короткую сводку: новые кейсы,
+   смена статусов, что без ответа.
 
 ## Люди
 
