@@ -48,18 +48,27 @@
   чего ждём, что блокирует, какой следующий шаг. Каждая ячейка — 1–2 коротких
   предложения, без пересказа переписки, без лишних деталей и колонок. Не добавляй
   обратно удалённые листы и колонки без просьбы.
-- Листы (версия от 05-Nov-2026, согласована со Stas): только `Case Register` и `Actions`.
-  Summary, Patterns, Guide и Lists Stas удалил. Формул в файле нет.
-- Колонки Case Register (14): ID, Problem, Category, Priority, Status, Initiated, Owner,
-  Summary, Answer / Resolution, Root cause, RCA, Waiting on / Blocker, Next step, Last update.
-  Колонку Answer / Resolution для решённого кейса заполняй так: как исправили и кто.
-- Actions: #, Case ID, Action, Owner, Due date, Status (Open / Proposed / In progress /
-  Done / Cancelled).
-- ID кейсов — числа 1, 2, 3… (на 05-Nov-2026 последний ID 13). В Actions `Case ID` — тот же номер.
-- Выпадающие списки заданы прямо в валидации (без листа Lists): Status, Priority, RCA, Category.
-- Статусы: New, Awaiting response, In analysis, Awaiting decision, In progress,
-  Waiting on Adyen, Fix deployed - verify, Closed. Кейс закрывается только при
-  верифицированном фиксе и `RCA = Confirmed` (или N/A для вопросов и решений).
+- Структура утверждена Stas 06-Nov-2026 («последняя версия»): **один лист**
+  `Adyen Case Register`. Листов Actions, Summary, Patterns, Guide, Lists нет. Формул нет.
+- Колонки (14, в этом порядке): ID, Problem, Category, Priority, Status, Initiated,
+  Last update, Owner, Details, Resolution, Root cause, RCA, Next step, Blocker.
+  - Problem — короткий симптом («что не так»), не причина.
+  - Details — только факты, которых нет в Problem (отель, суммы, номера US/Solvers,
+    даты). Не повторяй Problem.
+  - Resolution — что ответили или как исправили и кто. Root cause — почему возникло.
+  - Next step — следующее действие с именем; Blocker — что/кто мешает (пусто, если ничего).
+- Сортировка: по дате добавления (Initiated) по возрастанию; новый кейс — внизу.
+- ID — числа 1, 2, 3… по порядку строк (на 06-Nov-2026 последний ID 12). При ссылке
+  на другой кейс (#9) проверяй, что номер актуален.
+- Выпадающие списки заданы прямо в валидации: Status, Priority, RCA, Category.
+- Status (только 4): **Open** — ждём ответа/никто ещё не взял в работу;
+  **In progress** — решение согласовано, идёт работа или анализ;
+  **Blocked** — нельзя двигаться дальше из-за внешней зависимости или решения
+  (указано в Blocker); **Closed** — решено и проверено.
+- RCA (3): **Confirmed** — причина найдена и подтверждена; **Pending** — причина не
+  найдена или найдена частично; **Not a defect** — это вопрос, решение или новая
+  функция, анализировать причину нечего.
+- Кейс закрывается только при проверенном фиксе и `RCA = Confirmed` (или Not a defect).
 - Повторяющиеся темы держи в голове при анализе (в файл отдельным листом не выносить):
   надёжность загрузки данных (webhooks/payout reports), разные даты
   (ReportDate/PayoutDate/CreatedOn), нет общего референса (PSP Reference),
@@ -69,10 +78,10 @@
 
 1. Найди новые файлы в `Email cases` (по `createdTime`) и прочитай их (см. выше).
    Если Stas прислал свою версию xlsx — бери её за основу (он мог править вручную).
-2. Новый тред → новая строка со следующим номером. Продолжение существующего треда →
-   обнови Answer / Resolution, Status, Root cause, RCA, Waiting on, Next step, Last update.
+2. Новый тред → новая строка внизу со следующим номером. Продолжение существующего треда →
+   обнови Resolution, Status, Root cause, RCA, Next step, Blocker, Last update.
 3. Правь xlsx через openpyxl, стиль копируй с соседней строки (Arial 10, рамки, перенос
-   текста, шапка #1F3864). Форматирование подготовлено до строки 150.
+   текста, шапка #1F3864). Форматирование подготовлено до строки 149.
 4. Закоммить и отправь файл пользователю. В ответе дай короткую сводку: новые кейсы,
    смена статусов, что без ответа.
 
