@@ -60,6 +60,11 @@
 - **Двоеточие** только там, где без него нельзя (время 00:04, цитата кода). Не пиши
   «Rama: open ticket», «Decided: …», «Proposal: …». Пиши «Rama to open a ticket»,
   «Decided to …», «Proposal is to …».
+- **Шаблон: финальная версия Stas от 06.11 (присланный файл, теперь мастер-копия).**
+  Новые строки и правки делай в её стиле, существующие строки Stas без просьбы не
+  переписывай. В этом шаблоне Problem часто совпадает с темой письма, Owner может быть
+  пустым, Next step может быть без имени, колонки дат в формате ячеек `dd-mmm-yyyy`
+  (в тексте даты по-прежнему 05.09). Category «Terminals» добавлена 06.11.
 - Структура утверждена Stas 06-Nov-2026 («последняя версия»): **один лист**
   `Adyen Case Register`. Листов Actions, Summary, Patterns, Guide, Lists нет. Формул нет.
 - Колонки (14, в этом порядке): ID, Problem, Category, Priority, Status, Initiated,
@@ -79,7 +84,7 @@
     реальная зависимость (не приписывай людей, которые в треде не участвуют).
   - Next step — следующее действие с именем («Jan to create the US»); Blocker — что/кто мешает (пусто, если ничего).
 - Сортировка: по дате добавления (Initiated) по возрастанию; новый кейс — внизу.
-- ID — числа 1, 2, 3… по порядку строк (на 06.11 последний ID 10. 06.11 бывший кейс 7 «Invoice basis and helpdesk screens» влит в кейс «PMS vs Central Admin», кейс «Drop-in cancelled status» удалён по решению Stas, номера сдвинуты). При ссылке
+- ID — числа 1, 2, 3… по порядку строк (на 06.11 последний ID 11, P630 Verifone terminal. 06.11 бывший кейс 7 «Invoice basis and helpdesk screens» влит в кейс «PMS vs Central Admin», кейс «Drop-in cancelled status» удалён по решению Stas, номера сдвинуты). При ссылке
   на другой кейс (#9) проверяй, что номер актуален.
 - Выпадающие списки заданы прямо в валидации: Status, Priority, RCA, Category.
 - Status (только 4): **Open** — ждём ответа/никто ещё не взял в работу;
@@ -124,7 +129,8 @@
 
 ## Структура Drive-папки (снимок на 2026-11-05)
 
-- `Email cases/` — 12 тредов .eml (токенизация/PCI, маскирование карт, пропущенные
+- `Email cases/` — тредов .eml (06.11 добавлены новая версия токенизации и
+  «Re_ P630 verifone Adyen terminal») (токенизация/PCI, маскирование карт, пропущенные
   транзакции, расхождения PMS vs Central Admin, invoice data, Monday meeting, payout
   screen, payment references, дубли payout report, chargebacks, currency exchange,
   consolidate pending issues).
