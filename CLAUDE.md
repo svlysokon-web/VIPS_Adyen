@@ -113,7 +113,12 @@
    обнови Resolution, Status, Root cause, RCA, Next step, Blocker, Last update.
 3. Правь xlsx через openpyxl, стиль копируй с соседней строки (Arial 10, рамки, перенос
    текста, шапка #1F3864). Форматирование подготовлено до строки 149.
-4. Закоммить и отправь файл пользователю. В ответе дай короткую сводку: новые кейсы,
+4. Закоммить и отправь файл пользователю. Stas переносит изменения вручную в свою копию
+   на SharePoint, поэтому в ответе всегда перечисляй, какие строки (ID) добавлены или
+   изменены и в каких колонках. Ссылка на файл в репозитории:
+   https://github.com/svlysokon-web/VIPS_Adyen/blob/claude/cool-hopper-notv15/registers/Adyen_Case_Register.xlsx
+   (скачать: .../raw/claude/cool-hopper-notv15/registers/Adyen_Case_Register.xlsx).
+   В ответе дай короткую сводку: новые кейсы,
    смена статусов, что без ответа.
 
 ## Люди
