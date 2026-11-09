@@ -12,6 +12,7 @@ Action Plan, вопросы и User Stories. Подготовлено 09.11 по
   (списание с balance account отеля). С гостем говорит отель. Кто обрабатывает диспут, пока не решено.
 - Реестр, строка 10: Open, High, RCA Confirmed, Blocker «Process definition».
 - В документах Drive (гайды, Checklist, Status Update) чарджбэки не упоминаются.
+- Central Admin это внутреннее приложение VIPS, у клиентов доступа нет (Stas 09.11). По письмам кейсов 4 и 5 в нём таблица AdyenSettlementDetails и на его данных строятся счета VIPS.
 - Сроки ответа по документации Adyen (зависят от схемы):
   - [Visa](https://docs.adyen.com/risk-management/chargeback-guidelines/visa-chargebacks): 18 дней на защиту (9 дней только для локальных платежей US/Canada с 21.07.2025).
   - [Mastercard](https://docs.adyen.com/risk-management/chargeback-guidelines/mastercard-chargebacks): 40 дней.
@@ -52,11 +53,11 @@ Area или Disputes API (accept, defend, supply documents). У каждой с�
 **Предложение PO (Stas, на подтверждение Jan, Stefan, Chen)**
 - Уведомление сразу получают отель и Support, по email и на экране в PMS. Напоминание за 3 дня до срока.
 - Chargeback fee Adyen (если есть) перевыставляется отелю. Chen проверяет, что договор с Adyen это позволяет.
-- Процесс покрывает все карточные платежи: терминалы, Payment Page, PayLink.
+- Процесс сразу покрывает все карточные платежи: терминалы, Payment Page, Pay by Link, а также CC и VCC, когда отель получает данные карты и списывает деньги позже (решение Stas 09.11).
 
 **Rama / Kondalu (техника)**
 3. Какие dispute webhooks включены, принимаем ли их сейчас и где они логируются?
-4. Попадают ли строки чарджбэков из payout report Adyen в AdyenPayoutReportDetails, на экран выплат и в Central Admin? Если нет, итоги VIPS не сойдутся с Adyen (кейсы 4 и 9). Нужно для US 4.
+4. Попадают ли строки чарджбэков из payout report Adyen в AdyenPayoutReportDetails? От этого зависит, увидит ли отель чарджбэк в PMS и будет ли он в Central Admin, из которого VIPS строит счета (кейсы 4, 5 и 9). Нужно для US 4.
 5. Сохраняем ли PSP Reference для каждого платежа во всех каналах? По нему диспут находит бронь и отель (кейс 8). Нужно для US 1.
 6. Можно ли создать тестовый диспут в Adyen test environment?
 
@@ -88,6 +89,7 @@ Area или Disputes API (accept, defend, supply documents). У каждой с�
   3. The dispute is linked to the original payment and reservation by PSP Reference.
   4. A repeated webhook does not create a duplicate record.
   5. Failed processing is logged and can be retried.
+  6. Works for disputes from all channels, terminals, Payment Page, Pay by Link, CC and VCC.
 
 **US 2. Notify hotel and Support about a new dispute**
 - Story: As a hotel (and Support), I want to get a notice when a guest disputes a payment, so that we can act before the deadline.
@@ -115,8 +117,8 @@ Area или Disputes API (accept, defend, supply documents). У каждой с�
 - Value: The hotel understands why a payout is lower and reports stay correct.
 - AC:
   1. A chargeback debit and a reversal are shown on the reservation payment history.
-  2. The payout screen and payout report show chargeback lines separately with the PSP Reference.
-  3. Central Admin totals include chargebacks and match the Adyen report for the same period.
+  2. The hotel sees chargeback lines separately with the PSP Reference in PMS (payout screen and payout report).
+  3. Central Admin (internal VIPS) totals include chargebacks and match the Adyen report for the same period, so VIPS invoices are correct.
   4. Chargeback fee (if Adyen charges one) is shown separately and charged to the hotel (PO proposal, to be confirmed).
 
 **US 5. Accept or defend a dispute from PMS (only if decided that disputes are handled in PMS)**
@@ -157,7 +159,7 @@ What we know so far. The chargeback amount is taken from the hotel balance accou
 **My proposal (Jan, Stefan, Chen, please confirm or comment)**
 - When Adyen opens a dispute, the hotel and Support get a notice right away, by email and on a PMS screen. A reminder goes out 3 days before the deadline.
 - The Adyen chargeback fee, if there is one, is charged to the hotel. Chen, please check that our agreement with Adyen allows this.
-- The process covers all card payments, terminals, Payment Page and PayLink.
+- The process covers all card payments from the start. Terminals, Payment Page, Pay by Link, and also CC and VCC payments where the hotel gets the card details and charges the card later.
 
 **Open decisions (Jan, Stefan, Chen)**
 1. Who handles a dispute, the hotel itself or VIPS Support on behalf of the hotel?
@@ -165,7 +167,7 @@ What we know so far. The chargeback amount is taken from the hotel balance accou
 
 **Rama**
 3. Which dispute webhooks are turned on for our account, and do we receive them today? If yes, where are they stored or logged?
-4. When Adyen takes a chargeback from the hotel balance, it shows in the Adyen payout report. Does our import into AdyenPayoutReportDetails pick up these lines, so the payout screen and Central Admin show them?
+4. When Adyen takes a chargeback from the hotel balance, it shows in the Adyen payout report. Does our import into AdyenPayoutReportDetails pick up these lines? The hotel needs to see them in PMS, and we need them in Central Admin for our invoices.
 5. A dispute from Adyen comes with the PSP Reference of the original payment. Do we store this reference for every payment in all channels, so we can find the reservation and the hotel?
 
 **Kondalu**
