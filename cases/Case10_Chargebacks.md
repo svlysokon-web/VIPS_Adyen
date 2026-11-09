@@ -9,9 +9,14 @@ Action Plan, вопросы и User Stories. Подготовлено 09.11 по
   уведомление Support. Страница Disputes пустая.
 - Ответ Rama 05.11: по чарджбэкам ничего не разработано, от Charles ничего не получено.
 - Ответы Stas 09.11: страница Disputes = Adyen Customer Area. Сумму чарджбэка несёт отель
-  (списание с balance account отеля). Кто обрабатывает диспут, пока не решено.
+  (списание с balance account отеля). С гостем говорит отель. Кто обрабатывает диспут, пока не решено.
 - Реестр, строка 10: Open, High, RCA Confirmed, Blocker «Process definition».
 - В документах Drive (гайды, Checklist, Status Update) чарджбэки не упоминаются.
+- Сроки ответа по документации Adyen (зависят от схемы):
+  - [Visa](https://docs.adyen.com/risk-management/chargeback-guidelines/visa-chargebacks): 18 дней на защиту (9 дней только для локальных платежей US/Canada с 21.07.2025).
+  - [Mastercard](https://docs.adyen.com/risk-management/chargeback-guidelines/mastercard-chargebacks): 40 дней.
+  - [American Express](https://docs.adyen.com/risk-management/chargeback-guidelines/american-express-chargebacks): 14 дней на ответ на RFI. Без ответа на RFI следующий чарджбэк оспорить нельзя.
+- У Adyen для платформ есть [Dispute components](https://docs.adyen.com/platforms/components-overview/after-payment/disputes-component) (Dispute Overview, Dispute Management). Их встраивают в свой интерфейс: список диспутов, сроки, accept, загрузка документов. Доступны ли они для нашей интеграции, не известно.
 
 ## Суть кейса (для Stas, по-русски)
 Чарджбэк означает, что гость оспаривает карточный платёж через свой банк. Adyen списывает сумму
@@ -43,25 +48,22 @@ Area или Disputes API (accept, defend, supply documents). У каждой с�
 ## Нужна информация (вопросы)
 **Jan / Stefan / Chen (бизнес-решения)**
 1. Кто обрабатывает диспут: отель сам или VIPS Support от имени отеля?
-2. Кого и как уведомлять (отель, Support, email, экран в PMS)? В какой срок реагировать?
-3. Кто платит chargeback fee Adyen, если он есть? Перевыставляем отелю?
-4. Нужен ли контакт с гостем и кто его делает?
+2. Где отели управляют диспутами: в VIPS Cloud PMS (например, через Adyen Dispute components) или на странице Disputes в Adyen как отдельном инструменте?
+3. Кого и как уведомлять (отель, Support, email, экран в PMS)? В какой срок реагировать?
+4. Кто платит chargeback fee Adyen, если он есть? Перевыставляем отелю? Есть ли это в договоре с Adyen (Chen)?
 5. В scope и терминалы, и Payment Page, и PayLink?
 
-**Adyen (Kobe / York)**
-6. Подтвердить, что split configuration списывает чарджбэк с balance account отеля (и fee).
-7. Какие dispute webhooks включены для нашего merchant account?
-8. Сроки ответа на каждой стадии.
-9. Могут ли отели получить доступ к Disputes в Customer Area, или только через API?
-10. Как сымитировать диспут в test environment?
-
 **Rama / Kondalu (техника)**
-11. Принимаем ли сейчас dispute webhooks и где они логируются (или отбрасываются)?
-12. Попадают ли чарджбэки в payout report import (AdyenPayoutReportDetails) и в Central Admin?
-13. Как сейчас связан платёж с бронью (PSP Reference)? (связано с кейсом 8)
+6. Какие dispute webhooks включены, принимаем ли их сейчас и где они логируются?
+7. Попадают ли чарджбэки в payout report import (AdyenPayoutReportDetails) и в Central Admin?
+8. Как сейчас связан платёж с бронью (PSP Reference)? (связано с кейсом 8)
+9. Можно ли создать тестовый диспут в Adyen test environment?
 
-**Stas**
-14. Area / Iteration path и родительская Feature в Azure DevOps, формат названий US.
+**Jan**
+10. Area / Iteration path и родительская Feature в Azure DevOps.
+
+**Adyen (Kobe / York), в последнюю очередь**
+Пункты 4, 6 и 9, если внутри VIPS ответа нет.
 
 ## User Stories (EN, черновик для Azure DevOps)
 
@@ -129,19 +131,15 @@ Area или Disputes API (accept, defend, supply documents). У каждой с�
 **Task (not dev). Document the chargeback process**
 - Process document (RACI, steps from notice to closing, deadlines) and a short guide for Support and hotels. Link in register case 10.
 
-## Email to colleagues (09.11)
+## Email to colleagues (09.11, v2)
 
 ### Кому переадресовать вопросы Adyen внутри VIPS (предложение, не факт)
 | Вопрос Adyen | Кому внутри VIPS | Почему |
 |---|---|---|
-| Сумма и fee списываются с balance account отеля | Chen | Решения по фактурации и ценам, договор с Adyen |
+| Кто несёт chargeback fee, что в договоре | Chen | Решения по фактурации и ценам, договор с Adyen |
 | Какие dispute webhooks включены | Rama | Principal Engineer, настройка webhooks |
-| Сроки ответа на каждой стадии | Jan | Видел страницу Disputes в Customer Area, там видны сроки. Если нет, то Adyen |
-| Могут ли отели работать с Disputes в Customer Area | Jan | Есть доступ к Customer Area |
 | Как сымитировать диспут в тестовой среде | Kondalu | Работает с test environment |
-Если внутри ответа нет, Jan или Stas пересылает эти пункты Kobe и York.
-
-Вопрос «Area / Iteration path и родительская Feature» адресую Jan, он пишет US.
+Если внутри ответа нет, Stas пересылает эти пункты Kobe и York.
 
 ### Email text
 
@@ -153,32 +151,29 @@ Hi all,
 
 I am picking up the chargeback topic from Jan's email of 04.11. Rama confirmed on 05.11 that nothing has been built for chargebacks yet and there is no documentation from Charles. We have had 0 chargebacks so far, but when the first one comes, nobody will be notified and the hotel will only see a lower payout.
 
+What we know so far. The chargeback amount is taken from the hotel balance account, and the hotel is the one who talks to the guest. Deadlines to respond depend on the card scheme. Visa gives 18 days, Mastercard 40 days, and for American Express we have 14 days to answer a request for information. If we miss that request, we cannot defend the chargeback later.
+
 To describe the process and write the user stories, I need a few answers first.
 
 **Jan, Stefan, Chen (process decisions)**
 1. Who handles a dispute, the hotel itself or VIPS Support on behalf of the hotel?
-2. Who should be notified (hotel, Support, both), how (email, PMS screen) and how fast do we need to react?
-3. Who pays the Adyen chargeback fee, if there is one? Do we charge it to the hotel?
-4. Who contacts the guest, if needed?
+2. Where will hotels manage disputes, in VIPS Cloud PMS or in the Adyen Disputes page as a separate tool? Adyen has ready dispute components for platforms that can be added to our own screens (https://docs.adyen.com/platforms/components-overview/after-payment/disputes-component).
+3. Who should be notified (hotel, Support, both), how (email, PMS screen) and how fast do we need to react?
+4. Who pays the Adyen chargeback fee, if there is one? Do we charge it to the hotel? Chen, is this in our agreement with Adyen?
 5. Is this for all channels, terminals, Payment Page and PayLink?
 
-**Chen**
-6. The chargeback amount is taken from the hotel balance account. Is the same true for the chargeback fee? Is this in our agreement with Adyen?
-
 **Rama**
-7. Which dispute webhooks are turned on for our account, and do we receive them today? If yes, where are they stored or logged?
-8. Do chargebacks show up in AdyenPayoutReportDetails and in Central Admin?
-9. How do we link a payment to a reservation today? Is it by PSP Reference? (this is also open in the payment references case)
+6. Which dispute webhooks are turned on for our account, and do we receive them today? If yes, where are they stored or logged?
+7. Do chargebacks show up in AdyenPayoutReportDetails and in Central Admin?
+8. How do we link a payment to a reservation today? Is it by PSP Reference? (this is also open in the payment references case)
 
 **Kondalu**
-10. Can we create a test dispute in the Adyen test environment, so we can see the webhooks and the flow?
+9. Can we create a test dispute in the Adyen test environment, so we can see the webhooks and the flow?
 
 **Jan**
-11. In the Customer Area Disputes page, can you see the response deadlines for each stage?
-12. Can hotels get access to the Disputes page in Customer Area, or only we can?
-13. For the user stories in Azure DevOps, which Area path and parent Feature should I use?
+10. For the user stories in Azure DevOps, which Area path and parent Feature should I use?
 
-If we cannot answer 6, 7, 11 or 12 ourselves, I will ask Kobe and York at Adyen.
+If we cannot answer 4, 6 or 9 ourselves, I will ask Kobe and York at Adyen.
 
 Thanks,
 Stas
