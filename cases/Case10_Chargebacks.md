@@ -51,7 +51,8 @@ Area или Disputes API (accept, defend, supply documents). У каждой с�
 1. Кто обрабатывает диспут: отель сам или VIPS Support от имени отеля?
 2. Где отели управляют диспутами: в VIPS Cloud PMS (например, через Adyen Dispute components) или на странице Disputes в Adyen как отдельном инструменте?
 **Предложение PO (Stas, на подтверждение Jan, Stefan, Chen)**
-- Уведомление сразу получают отель и Support, по email и на экране в PMS. Напоминание за 3 дня до срока.
+- Уведомление сразу получает только отель, по email и на экране в PMS. Напоминание за 3 дня до срока.
+- Support уведомления не получает. Для Support список всех диспутов с выгрузкой (решение Stas 09.11). Где Support его открывает, не решено, в PMS Support не работает.
 - Chargeback fee Adyen (если есть) перевыставляется отелю. Chen проверяет, что договор с Adyen это позволяет.
 - Процесс сразу покрывает все карточные платежи: терминалы, Payment Page, Pay by Link, а также CC и VCC, когда отель получает данные карты и списывает деньги позже (решение Stas 09.11).
 
@@ -91,12 +92,12 @@ Area или Disputes API (accept, defend, supply documents). У каждой с�
   5. Failed processing is logged and can be retried.
   6. Works for disputes from all channels, terminals, Payment Page, Pay by Link, CC and VCC.
 
-**US 2. Notify hotel and Support about a new dispute**
-- Story: As a hotel (and Support), I want to get a notice when a guest disputes a payment, so that we can act before the deadline.
-- Problem: Nobody notifies the hotel or Support (Jan, 04.11).
+**US 2. Notify the hotel about a new dispute**
+- Story: As a hotel, I want to get a notice when a guest disputes a payment, so that I can act before the deadline.
+- Problem: Nobody notifies the hotel (Jan, 04.11).
 - Value: No dispute is lost because nobody saw it.
 - AC:
-  1. On a new dispute or a new stage, the hotel and Support get a notice by email and on the PMS screen (PO proposal, to be confirmed).
+  1. On a new dispute or a new stage, the hotel gets a notice by email and on the PMS screen (PO proposal, to be confirmed).
   2. The notice shows reservation, guest payment date, amount, reason, stage and deadline.
   3. A reminder is sent 3 days before the deadline if the dispute is still open (PO proposal, to be confirmed).
   4. Notice texts are approved by Jan.
@@ -104,7 +105,7 @@ Area или Disputes API (accept, defend, supply documents). У каждой с�
 **US 3. Disputes overview in PMS**
 - Story: As a hotel user, I want a Disputes screen in PMS, so that I see all disputes and their status without Adyen Customer Area.
 - Problem: Disputes are only in Adyen Customer Area and that page is not used today.
-- Value: The hotel and Support see open disputes, deadlines and outcome in one place.
+- Value: The hotel sees open disputes, deadlines and outcome in one place.
 - AC:
   1. List per hotel with date, reservation, amount, reason, stage, deadline, status (open, won, lost, accepted).
   2. Filter by status and period. Open disputes with a near deadline are highlighted.
@@ -130,6 +131,16 @@ Area или Disputes API (accept, defend, supply documents). У каждой с�
   2. User can upload the documents Adyen requires (invoice, reservation, signed terms, etc.).
   3. Defense is sent via Adyen Disputes API before the deadline and the result is shown.
   4. Action is blocked after the deadline with a clear message.
+
+**US 6. Dispute list for Support with export**
+- Story: As VIPS Support, I want a list of all disputes across hotels that I can export, so that I can answer a hotel that asks about a dispute or a lower payout.
+- Problem: Support does not work in PMS and gets no dispute notices (PO decision 09.11).
+- Value: Support can find any dispute fast without access to Adyen Customer Area.
+- AC:
+  1. List of all disputes for all hotels with hotel, date, reservation, PSP Reference, amount, reason, stage, deadline and status.
+  2. Filter by hotel, status and period.
+  3. Export of the filtered list to Excel (xlsx or csv).
+  4. Available in a tool Support already uses (to be agreed).
 
 **Task (not dev). Document the chargeback process**
 - Process document (RACI, steps from notice to closing, deadlines) and a short guide for Support and hotels. Link in register case 10.
@@ -157,7 +168,8 @@ I am picking up the chargeback topic from Jan's email of 04.11. Rama confirmed o
 What we know so far. The chargeback amount is taken from the hotel balance account, and the hotel is the one who talks to the guest. Deadlines to respond depend on the card scheme. Visa gives 18 days, Mastercard 40 days, and for American Express we have 14 days to answer a request for information. If we miss that request, we cannot defend the chargeback later.
 
 **My proposal (Jan, Stefan, Chen, please confirm or comment)**
-- When Adyen opens a dispute, the hotel and Support get a notice right away, by email and on a PMS screen. A reminder goes out 3 days before the deadline.
+- When Adyen opens a dispute, the hotel gets a notice right away, by email and on a PMS screen. A reminder goes out 3 days before the deadline.
+- Support does not get notices. Instead, Support gets a list of all disputes that they can export, in a tool they already use.
 - The Adyen chargeback fee, if there is one, is charged to the hotel. Chen, please check that our agreement with Adyen allows this.
 - The process covers all card payments from the start. Terminals, Payment Page, Pay by Link, and also CC and VCC payments where the hotel gets the card details and charges the card later.
 
