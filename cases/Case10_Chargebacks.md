@@ -9,7 +9,7 @@ Action Plan, вопросы и User Stories. Подготовлено 09.11 по
   уведомление Support. Страница Disputes пустая.
 - Ответ Rama 05.11: по чарджбэкам ничего не разработано, от Charles ничего не получено.
 - Ответы Stas 09.11: страница Disputes = Adyen Customer Area. Сумму чарджбэка несёт отель
-  (списание с balance account отеля). С гостем говорит отель. Кто обрабатывает диспут, пока не решено.
+  (списание с balance account отеля). С гостем говорит отель. Предложение Stas 09.11: диспут ведёт сам отель в VIPS Cloud PMS.
 - Реестр, строка 10: Open, High, RCA Confirmed, Blocker «Process definition».
 - В документах Drive (гайды, Checklist, Status Update) чарджбэки не упоминаются.
 - Central Admin это внутреннее приложение VIPS, у клиентов доступа нет (Stas 09.11). По письмам кейсов 4 и 5 в нём таблица AdyenSettlementDetails и на его данных строятся счета VIPS.
@@ -38,7 +38,7 @@ Area или Disputes API (accept, defend, supply documents). У каждой с�
 | # | Шаг | Кто (предложение) | Результат |
 |---|-----|-------------------|-----------|
 | 1 | Собрать недостающие факты (вопросы ниже) | Stas | Ответы Adyen, Rama, Jan |
-| 2 | Решение: кто ведёт диспут (отель / VIPS Support), кого уведомляем, канал, срок реакции | Jan, Stefan, Chen | Зафиксированное решение |
+| 2 | Подтвердить предложения PO (диспут ведёт отель в VIPS Cloud PMS, уведомления, fee, каналы) | Jan, Stefan, Chen | Зафиксированное решение |
 | 3 | Описать процесс (RACI + шаги от webhook до закрытия) | Stas, Jan | Документ процесса, ссылка в реестре |
 | 4 | Spike: проверить конфигурацию Adyen и что сейчас приходит в webhooks | Rama / Kondalu | Отчёт: события, split, тест в test env |
 | 5 | US в Azure DevOps (ниже) и оценка | Jan создаёт US, Rama оценивает | US в спринте |
@@ -47,26 +47,25 @@ Area или Disputes API (accept, defend, supply documents). У каждой с�
 | 8 | Закрыть кейс в реестре после проверенного теста | Stas | Status Closed |
 
 ## Нужна информация (вопросы)
-**Jan / Stefan / Chen (бизнес-решения)**
-1. Кто обрабатывает диспут: отель сам или VIPS Support от имени отеля?
-2. Где отели управляют диспутами: в VIPS Cloud PMS (например, через Adyen Dispute components) или на странице Disputes в Adyen как отдельном инструменте?
 **Предложение PO (Stas, на подтверждение Jan, Stefan, Chen)**
+- Диспут ведёт сам отель, не VIPS Support.
+- Отели управляют диспутами в VIPS Cloud PMS, а не на странице Disputes в Adyen. Вариант реализации: Adyen Dispute components.
 - Уведомление сразу получает только отель, по email и на экране в PMS. Напоминание за 3 дня до срока.
 - Support уведомления не получает. Для Support список всех диспутов с выгрузкой (решение Stas 09.11). Где Support его открывает, не решено, в PMS Support не работает.
 - Chargeback fee Adyen (если есть) перевыставляется отелю. Chen проверяет, что договор с Adyen это позволяет.
 - Процесс сразу покрывает все карточные платежи: терминалы, Payment Page, Pay by Link, а также CC и VCC, когда отель получает данные карты и списывает деньги позже (решение Stas 09.11).
 
 **Rama / Kondalu (техника)**
-3. Какие dispute webhooks включены, принимаем ли их сейчас и где они логируются?
-4. Попадают ли строки чарджбэков из payout report Adyen в AdyenPayoutReportDetails? От этого зависит, увидит ли отель чарджбэк в PMS и будет ли он в Central Admin, из которого VIPS строит счета (кейсы 4, 5 и 9). Нужно для US 4.
-5. Сохраняем ли PSP Reference для каждого платежа во всех каналах? По нему диспут находит бронь и отель (кейс 8). Нужно для US 1.
-6. Можно ли создать тестовый диспут в Adyen test environment?
+1. Какие dispute webhooks включены, принимаем ли их сейчас и где они логируются?
+2. Попадают ли строки чарджбэков из payout report Adyen в AdyenPayoutReportDetails? От этого зависит, увидит ли отель чарджбэк в PMS и будет ли он в Central Admin, из которого VIPS строит счета (кейсы 4, 5 и 9). Нужно для US 4.
+3. Сохраняем ли PSP Reference для каждого платежа во всех каналах? По нему диспут находит бронь и отель (кейс 8). Нужно для US 1.
+4. Можно ли создать тестовый диспут в Adyen test environment?
 
 **Jan**
-7. Area / Iteration path и родительская Feature в Azure DevOps.
+5. Area / Iteration path и родительская Feature в Azure DevOps.
 
 **Adyen (Kobe / York), в последнюю очередь**
-Пункты 3 и 6, если внутри VIPS ответа нет. Договор по fee, если Chen не найдёт ответ.
+Пункты 1 и 4, если внутри VIPS ответа нет. Договор по fee, если Chen не найдёт ответ.
 
 ## User Stories (EN, черновик для Azure DevOps)
 
@@ -122,9 +121,9 @@ Area или Disputes API (accept, defend, supply documents). У каждой с�
   3. Central Admin (internal VIPS) totals include chargebacks and match the Adyen report for the same period, so VIPS invoices are correct.
   4. Chargeback fee (if Adyen charges one) is shown separately and charged to the hotel (PO proposal, to be confirmed).
 
-**US 5. Accept or defend a dispute from PMS (only if decided that disputes are handled in PMS)**
-- Story: As the dispute owner, I want to accept or defend a dispute and upload documents in PMS, so that we do not need Adyen Customer Area.
-- Problem: Depends on the decision who handles disputes. Not decided yet.
+**US 5. Accept or defend a dispute from PMS**
+- Story: As a hotel user, I want to accept or defend a dispute and upload documents in PMS, so that we do not need Adyen Customer Area.
+- Problem: The hotel handles its own disputes in VIPS Cloud PMS (PO proposal 09.11, to be confirmed). Today this is only possible in Adyen Customer Area.
 - Value: Higher chance to win disputes, one tool for the hotel.
 - AC:
   1. User can accept a dispute or choose a defense reason from the list Adyen returns.
@@ -145,7 +144,7 @@ Area или Disputes API (accept, defend, supply documents). У каждой с�
 **Task (not dev). Document the chargeback process**
 - Process document (RACI, steps from notice to closing, deadlines) and a short guide for Support and hotels. Link in register case 10.
 
-## Email to colleagues (09.11, v3)
+## Email to colleagues (09.11, v4)
 
 ### Кому переадресовать вопросы Adyen внутри VIPS (предложение, не факт)
 | Вопрос Adyen | Кому внутри VIPS | Почему |
@@ -168,27 +167,25 @@ I am picking up the chargeback topic from Jan's email of 04.11. Rama confirmed o
 What we know so far. The chargeback amount is taken from the hotel balance account, and the hotel is the one who talks to the guest. Deadlines to respond depend on the card scheme. Visa gives 18 days, Mastercard 40 days, and for American Express we have 14 days to answer a request for information. If we miss that request, we cannot defend the chargeback later.
 
 **My proposal (Jan, Stefan, Chen, please confirm or comment)**
+- The hotel handles its own disputes, not VIPS Support.
+- Hotels manage disputes in VIPS Cloud PMS, not in the Adyen Disputes page as a separate tool. Adyen has ready dispute components for platforms that we can add to our own screens (https://docs.adyen.com/platforms/components-overview/after-payment/disputes-component).
 - When Adyen opens a dispute, the hotel gets a notice right away, by email and on a PMS screen. A reminder goes out 3 days before the deadline.
 - Support does not get notices. Instead, Support gets a list of all disputes that they can export, in a tool they already use.
 - The Adyen chargeback fee, if there is one, is charged to the hotel. Chen, please check that our agreement with Adyen allows this.
 - The process covers all card payments from the start. Terminals, Payment Page, Pay by Link, and also CC and VCC payments where the hotel gets the card details and charges the card later.
 
-**Open decisions (Jan, Stefan, Chen)**
-1. Who handles a dispute, the hotel itself or VIPS Support on behalf of the hotel?
-2. Where will hotels manage disputes, in VIPS Cloud PMS or in the Adyen Disputes page as a separate tool? Adyen has ready dispute components for platforms that can be added to our own screens (https://docs.adyen.com/platforms/components-overview/after-payment/disputes-component).
-
 **Rama**
-3. Which dispute webhooks are turned on for our account, and do we receive them today? If yes, where are they stored or logged?
-4. When Adyen takes a chargeback from the hotel balance, it shows in the Adyen payout report. Does our import into AdyenPayoutReportDetails pick up these lines? The hotel needs to see them in PMS, and we need them in Central Admin for our invoices.
-5. A dispute from Adyen comes with the PSP Reference of the original payment. Do we store this reference for every payment in all channels, so we can find the reservation and the hotel?
+1. Which dispute webhooks are turned on for our account, and do we receive them today? If yes, where are they stored or logged?
+2. When Adyen takes a chargeback from the hotel balance, it shows in the Adyen payout report. Does our import into AdyenPayoutReportDetails pick up these lines? The hotel needs to see them in PMS, and we need them in Central Admin for our invoices.
+3. A dispute from Adyen comes with the PSP Reference of the original payment. Do we store this reference for every payment in all channels, so we can find the reservation and the hotel?
 
 **Kondalu**
-6. Can we create a test dispute in the Adyen test environment, so we can see the webhooks and the flow?
+4. Can we create a test dispute in the Adyen test environment, so we can see the webhooks and the flow?
 
 **Jan**
-7. For the user stories in Azure DevOps, which Area path and parent Feature should I use?
+5. For the user stories in Azure DevOps, which Area path and parent Feature should I use?
 
-If we cannot answer 3 or 6 ourselves, I will ask Kobe and York at Adyen.
+If we cannot answer 1 or 4 ourselves, I will ask Kobe and York at Adyen.
 
 Thanks,
 Stas
