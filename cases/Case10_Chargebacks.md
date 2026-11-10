@@ -16,8 +16,8 @@
 ## Решения (согласованы 10.11)
 1. Диспут ведёт сам отель. Сумма списывается с balance account отеля, с гостем говорит отель.
 2. Отели управляют диспутами в VIPS Cloud PMS. Вариант реализации: Adyen Dispute components.
-3. Уведомление всегда показывается в VIPS PMS. Дополнительно email сотрудникам отеля, которые подписаны. Напоминание за 3 дня до срока, если отель ещё не ответил.
-4. Support уведомления не получает. Support видит все диспуты и чарджбэки в Central Admin и выгружает их (решение Stas 10.11).
+3. Уведомление отелю по email (зарегистрированные сотрудники отеля) и на экране в PMS. Напоминание за 3 дня до срока.
+4. Support уведомления не получает. Support получает список всех диспутов с выгрузкой.
 5. Chargeback fee Adyen (если есть) перевыставляется отелю.
 6. Процесс покрывает все каналы: терминалы, Payment Page, Pay by Link, CC и VCC.
 
@@ -41,7 +41,7 @@
 ## Что ещё не закрыто
 1. **Pay by Link.** В отправленном письме 10.11 его нет в списке каналов, а 09.11 он был в scope. В US оставил Pay by Link.
 2. **Chargeback fee.** Chen ответа не дал. Fee на отель по умолчанию не настроено (см. выше). Если fee списывается в Adyen с balance account отеля, перевыставлять в счёте VIPS не нужно. Это проверяется в US 0.
-3. **Права в PMS (US 2).** Предложение: уведомления видят пользователи с правом Disputes в роли. Нужно подтвердить, есть ли в PMS такая настройка ролей или её надо добавить.
+3. **Где Support открывает список диспутов (US 6).** В PMS Support не работает, место не согласовано.
 4. **Payout report.** Попадание строк чарджбэков в AdyenPayoutReportDetails не проверено, только ожидается. Проверка в US 0.
 
 ## Action Plan
@@ -86,29 +86,17 @@
   5. Failed processing is logged and can be retried.
   6. Works for terminals, Payment Page, Pay by Link, CC and VCC.
 
-### US 2. Dispute notifications in PMS and by email
-- **Story:** As a hotel user, I want to see a notice in VIPS PMS as soon as a guest disputes a payment, and get an email if I am subscribed, so that we act before the deadline.
-- **Problem:** Nobody is notified about a dispute today (Jan, 04.11). Hotels handle their own disputes in PMS (decision 10.11).
-- **Value:** No dispute is missed and no deadline passes because nobody saw it.
-- **Notification logic:**
-
-  | Adyen event | PMS notice | Email to subscribers |
-  |---|---|---|
-  | New dispute or request for information (NOTIFICATION_OF_CHARGEBACK, REQUEST_FOR_INFORMATION) | Right away | Right away |
-  | Amount taken from the hotel balance (CHARGEBACK) | Same notice is updated | No |
-  | Reminder, 3 days before the deadline, only if not yet accepted or defended | Once | Once |
-  | Result (CHARGEBACK_REVERSED, SECOND_CHARGEBACK, PREARBITRATION_WON) | Right away | Right away |
-
+### US 2. Notify the hotel about a dispute
+- **Story:** As a hotel, I want the right employees to get a notice when a guest disputes a payment, so that we act before the deadline.
+- **Problem:** Nobody is notified about a dispute today (Jan, 04.11).
+- **Value:** No dispute is lost because nobody saw it.
 - **AC:**
-  1. PMS notices go to all users of the hotel who have the Disputes permission in their user role. Other hotels never see them.
-  2. On a new dispute or a request for information, the notice shows right away in the PMS notification list, and the Disputes menu shows a counter of disputes that need action.
-  3. The notice shows reservation, payment date, amount, reason, stage and deadline, and opens the dispute.
-  4. Read status is per user. The counter stays until the dispute is accepted, defended or closed.
-  5. One notice per event from the table. The same Adyen event received twice does not create a second notice or email.
-  6. 3 days before the deadline, if the dispute is still not accepted or defended, one reminder notice and one reminder email are sent. No reminder if the hotel already answered.
-  7. In hotel settings, one or more employees (email addresses) can subscribe to dispute emails (Jan, 10.11). Emails are an extra channel, PMS notices always show.
-  8. If nobody is subscribed to dispute emails, hotel settings show a warning.
-  9. Email texts are approved by Stas.
+  1. In hotel settings the hotel can register one or more employees (email addresses) for dispute notices (Jan, 10.11).
+  2. On a new dispute or a new stage, the registered employees get an email and the PMS shows a notice.
+  3. The notice shows reservation, payment date, amount, reason, stage and deadline, with a link to the dispute in PMS.
+  4. A reminder goes out 3 days before the deadline if the dispute is still open.
+  5. If no employee is registered, the hotel settings show a warning (recommendation).
+  6. Email texts are approved by Stas.
 
 ### US 3. Disputes screen in VIPS Cloud PMS
 - **Story:** As a hotel user, I want a Disputes screen in PMS, so that I see all disputes and their status without Adyen Customer Area.
@@ -132,26 +120,25 @@
   4. After the deadline, accept and defend are blocked with a clear message.
   5. Built with Adyen Dispute components if US 0 confirms they can be used.
 
-### US 5. Chargebacks in hotel payouts and reports in PMS
-- **Story:** As a hotel, I want chargebacks, reversals and fees visible in PMS, so that I understand why a payout is lower.
-- **Problem:** The chargeback amount is taken from the hotel balance account. If it is missing in PMS, the hotel sees a lower payout without explanation.
-- **Value:** The hotel can match its payout with Adyen without asking Support.
+### US 5. Chargebacks in payouts and reports
+- **Story:** As a hotel and as VIPS Finance, I want chargebacks, reversals and fees visible in PMS and Central Admin, so that totals match Adyen.
+- **Problem:** The chargeback amount is taken from the hotel balance account. If it is missing in PMS and Central Admin, payouts and VIPS totals will not match (see cases 4 and 9).
+- **Value:** The hotel understands why a payout is lower, and VIPS invoices are correct.
 - **AC:**
   1. The chargeback and the reversal are shown in the payment history of the reservation.
   2. The hotel sees chargeback lines with the PSP Reference on the payout screen and in the payout report in PMS.
-  3. The chargeback fee is shown as a separate line.
-  4. PMS payout totals match the Adyen payout report for the same period.
+  3. Central Admin (internal VIPS) totals include chargebacks and match the Adyen report for the same period.
+  4. The chargeback fee is shown as a separate line. If Adyen does not take it from the hotel balance account (US 0), it is added to the VIPS invoice to the hotel.
 
-### US 6. Disputes and chargebacks in Central Admin for Support
-- **Story:** As VIPS Support, I want all disputes and chargebacks of all hotels in Central Admin, with export, so that I can answer a hotel and VIPS totals and invoices are correct.
-- **Problem:** Support does not work in PMS and gets no dispute notices (decision 10.11). If chargebacks are missing in Central Admin, VIPS totals will not match Adyen (see cases 4 and 9).
-- **Value:** Support finds any dispute fast without access to Adyen Customer Area, and VIPS invoices to hotels are correct.
+### US 6. Dispute list for Support with export
+- **Story:** As VIPS Support, I want a list of all disputes across hotels that I can export, so that I can answer a hotel that asks about a dispute or a lower payout.
+- **Problem:** Support does not work in PMS and gets no dispute notices (decision 10.11).
+- **Value:** Support finds any dispute fast, without access to Adyen Customer Area.
 - **AC:**
-  1. Central Admin has a list of all disputes for all hotels with hotel, date, reservation, PSP Reference, amount, reason, stage, deadline and status.
+  1. List of all disputes for all hotels with hotel, date, reservation, PSP Reference, amount, reason, stage, deadline and status.
   2. Filter by hotel, status and period.
   3. Export of the filtered list to Excel (xlsx or csv).
-  4. Central Admin totals include chargebacks, reversals and fees and match the Adyen report for the same period.
-  5. If Adyen does not take the chargeback fee from the hotel balance account (US 0), the fee is added to the VIPS invoice to the hotel.
+  4. Available in the tool Support uses (to be agreed, see open point 3).
 
 ### Task (not dev). Guide for hotels and Support
 - Short guide: what a chargeback is, deadlines per scheme, how to register employees for notices, how to accept or defend in PMS, what Support can see. Saved in the Drive folder Adyen, link in register case 10.
