@@ -121,6 +121,10 @@
    В ответе дай короткую сводку: новые кейсы,
    смена статусов, что без ответа.
 
+## Рабочие файлы по кейсам
+
+- `cases/CaseN_<тема>.md`: Action Plan, факты, решения, открытые вопросы и финальные US по кейсу. Пример: `cases/Case10_Chargebacks.md` (US 0 to 6 финализированы 10.11).
+
 ## Люди
 
 - VIPS: Stefan van Welie (Director of Technology & Product), Jan Paauwe (Product
