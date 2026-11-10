@@ -114,8 +114,8 @@
   9. Email texts are approved by PO.
 
 ### US 3. Disputes screen in VIPS Cloud PMS
-- **Story:** As a hotel user, I want a Disputes screen in PMS, so that I see all disputes and their status without Adyen Customer Area.
-- **Problem:** Disputes are only visible in Adyen Customer Area, and hotels manage disputes in PMS (decision 10.11).
+- **Story:** As a hotel user, I want a Disputes screen in PMS, so that I see all disputes and their status.
+- **Problem:** Disputes are not visible to hotel managers in the PMS.
 - **Value:** The hotel sees open disputes, deadlines and results in one place.
 - **Reference:** [Dispute components](https://docs.adyen.com/platforms/components-overview/after-payment/disputes-component)
 - **AC:**
@@ -123,10 +123,10 @@
   2. Filter by status and period. Disputes with a deadline in 3 days or less are highlighted.
   3. Click opens the reservation and the original payment.
   4. Status updates when Adyen sends a new stage or the result.
-  5. Built with Adyen Dispute components if US 0 confirms they can be used, otherwise with our own screen.
+  5. Built with Adyen Dispute components.
 
 ### US 4. Accept or defend a dispute in PMS
-- **Story:** As a hotel user, I want to accept or defend a dispute and upload documents in PMS, so that I do not need Adyen Customer Area.
+- **Story:** As a hotel user, I want to accept or defend a dispute and upload supporting documents directly in the PMS, so that I can manage dispute process in one place.
 - **Problem:** The hotel handles its own disputes in PMS (decision 10.11), but defending is only possible in Adyen Customer Area.
 - **Value:** Hotels can win disputes on time from the tool they use every day.
 - **Reference:** [Disputes API](https://docs.adyen.com/risk-management/disputes-api)
