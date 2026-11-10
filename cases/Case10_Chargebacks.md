@@ -62,19 +62,18 @@
 
 ## User Stories (final, EN, for Azure DevOps)
 
-### US 0 (Spike). Enable dispute webhooks and check chargeback setup in Adyen
+### US 0 . Enable dispute webhooks and check chargeback setup
 - **Story:** As the dev team, we want dispute events from Adyen turned on and the chargeback setup checked, so that we build the feature on facts.
-- **Problem:** No dispute webhooks are enabled for our account (Rama, 10.11). It is not checked from which balance account Adyen takes the chargeback amount and the fee, and if chargeback lines reach AdyenPayoutReportDetails.
+- **Problem:** No dispute webhooks are enabled for our account. Not checked from which balance account Adyen takes the chargeback amount and the fee, and if chargeback lines reach AdyenPayoutReportDetails.
 - **Value:** We know what Adyen sends, who pays, and what we already receive, before we build screens.
 - **Reference:** [Split chargebacks](https://docs.adyen.com/platforms/online-payments/split-transactions/split-chargebacks)
 - **AC:**
   1. Standard webhook has dispute events enabled in test and live. The list of enabled event codes is documented.
   2. An API credential with the dispute management role exists (needed for the Disputes API and dispute components).
-  3. The chargeback amount is taken from the hotel balance account (`chargeback` setting checked and documented).
-  4. The chargeback fee goes to the hotel balance account (`chargebackCostAllocation` checked). If this is not possible, it is reported to Stas.
-  5. A test chargeback is created in the Adyen test environment. Received webhooks are saved as examples.
+  3. The chargeback amount is taken from the hotel balance account (`chargeback`).
+  4. The chargeback fee goes to the hotel balance account (`chargebackCostAllocation` checked).
+  5. A test chargeback is created in the test environment. Received webhooks are saved as examples.
   6. Chargeback lines from the Adyen payout report are present in AdyenPayoutReportDetails after the test.
-  7. Short note if Adyen Dispute components can be used in VIPS Cloud PMS (prerequisites, effort).
 
 ### US 1. Receive and store dispute events
 - **Story:** As VIPS, I want every Adyen dispute event stored and linked to the original payment, so that no chargeback is missed.
@@ -82,16 +81,16 @@
 - **Value:** Every dispute is in our data from the first event.
 - **Reference:** [Dispute webhooks](https://docs.adyen.com/risk-management/disputes-api/dispute-notifications)
 - **AC:**
-  1. All dispute events from US 0 are accepted and acknowledged to Adyen.
+  1. VIPS accepts all Adyen dispute webhooks and confirms each one to Adyen with [accepted].
   2. Each event is stored with PSP Reference, original PSP Reference, hotel, amount, currency, reason, stage, `defensePeriodEndsAt` and event date.
-  3. The dispute is linked to the original payment and reservation by the original PSP Reference (stored for all channels, Rama 10.11).
+  3. The dispute is linked to the original payment and reservation by the original PSP Reference.
   4. A repeated webhook does not create a duplicate.
   5. Failed processing is logged and can be retried.
-  6. Works for terminals, Payment Page, Pay by Link, CC and VCC.
+  6. Works for terminals, Payment Page, Pay Link, CC and VCC.
 
-### US 2. Dispute notifications in PMS and by email
-- **Story:** As a hotel user, I want to see a notice in VIPS PMS as soon as a guest disputes a payment, and get an email if I am subscribed, so that we act before the deadline.
-- **Problem:** Nobody is notified about a dispute today (Jan, 04.11). Hotels handle their own disputes in PMS (decision 10.11).
+### US 2. Dispute notifications
+- **Story:** As a hotel user, I want to see a notice in VIPS PMS and get an email as soon as a guest disputes a payment, so that we act before the deadline.
+- **Problem:** Nobody is notified about a dispute today.
 - **Value:** No dispute is missed and no deadline passes because nobody saw it.
 - **Notification logic:**
 
@@ -104,15 +103,15 @@
 
 - **Reference:** [NOTIFICATION_OF_CHARGEBACK webhook (defensePeriodEndsAt)](https://docs.adyen.com/api-explorer/Webhooks/1/post/NOTIFICATION_OF_CHARGEBACK)
 - **AC:**
-  1. PMS notices go to all users of the hotel who have the Disputes permission in their user role. Other hotels never see them.
+  1. PMS notices go to all users of the hotel who have the Disputes permission in their user role.
   2. On a new dispute or a request for information, the notice shows right away in the PMS notification list, and the Disputes menu shows a counter of disputes that need action.
   3. The notice shows reservation, payment date, amount, reason, stage and deadline, and opens the dispute.
   4. Read status is per user. The counter stays until the dispute is accepted, defended or closed.
   5. One notice per event from the table. The same Adyen event received twice does not create a second notice or email.
   6. 3 days before the deadline, if the dispute is still not accepted or defended, one reminder notice and one reminder email are sent. No reminder if the hotel already answered.
-  7. In hotel settings, one or more employees (email addresses) can subscribe to dispute emails (Jan, 10.11). Emails are an extra channel, PMS notices always show.
+  7. In hotel settings, one or more employees (email addresses) can subscribe to dispute emails. Emails are an extra channel, PMS notices always show.
   8. If nobody is subscribed to dispute emails, hotel settings show a warning.
-  9. Email texts are approved by Stas.
+  9. Email texts are approved by PO.
 
 ### US 3. Disputes screen in VIPS Cloud PMS
 - **Story:** As a hotel user, I want a Disputes screen in PMS, so that I see all disputes and their status without Adyen Customer Area.
