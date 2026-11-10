@@ -1,7 +1,7 @@
 # Case 10. Chargeback process not defined
 
 Статус на 10.11: **In progress**. Процесс согласован (Jan 10.11), технические вопросы закрыты (Rama 10.11).
-Следующий шаг: Stas заводит US 0 to 6 в Azure DevOps, Rama начинает с US 0.
+Следующий шаг: Stas заводит US 0 to 7 в Azure DevOps, Rama начинает с US 0.
 
 ## Переписка (факты)
 - 04.11 Jan: что происходит при чарджбэке, уведомят ли клиента и Support. Страница Disputes в Adyen Customer Area пустая, чарджбэков 0.
@@ -47,15 +47,15 @@
 ## Action Plan
 | # | Шаг | Кто | Результат |
 |---|-----|-----|-----------|
-| 1 | Завести US 0 to 6 в Azure DevOps | Stas | US в бэклоге |
+| 1 | Завести US 0 to 7 в Azure DevOps | Stas | US в бэклоге |
 | 2 | US 0: включить webhooks, проверить настройки списания и fee, тестовый чарджбэк | Rama / Kondalu | Отчёт по AC US 0 |
 | 3 | По итогам US 0 уточнить US 3 и US 4 (Adyen components или своя разработка) | Stas, Rama | Обновлённые US |
 | 4 | Разработка US 1 to 6 | Kondalu | Пройденные AC |
 | 5 | Сквозной тест в Adyen test: диспут от открытия до закрытия по каждому каналу | Kondalu, Stas | Протокол теста |
-| 6 | Гайд для отелей и Support (Task) | Stas | Гайд в Drive |
+| 6 | US 7: гайды для отелей и Support | Stas | Гайды в Drive |
 | 7 | Закрыть кейс 10 в реестре | Stas | Status Closed |
 
-**Критерий закрытия кейса:** US 0 to 6 и Task выполнены, сквозной тест пройден в Adyen test, первый диспут в live виден отелю в PMS.
+**Критерий закрытия кейса:** US 0 to 7 выполнены, сквозной тест пройден в Adyen test, первый диспут в live виден отелю в PMS.
 
 ---
 
@@ -153,5 +153,16 @@
   4. Central Admin totals include chargebacks, reversals and fees and match the Adyen report for the same period.
   5. If Adyen does not take the chargeback fee from the hotel balance account (US 0), the fee is added to the VIPS invoice to the hotel.
 
-### Task (not dev). Guide for hotels and Support
-- Short guide: what a chargeback is, deadlines per scheme, how to register employees for notices, how to accept or defend in PMS, what Support can see. Saved in the Drive folder Adyen, link in register case 10.
+### US 7. User guides for hotels and Support (owner Stas)
+- **Story:** As a hotel user and as VIPS Support, I want a short guide on chargebacks, so that I know what to do when a dispute comes in and before the deadline.
+- **Problem:** Chargebacks are new for hotels and Support. Nothing is documented today (Rama, 05.11). Without a guide, hotels will miss deadlines and Support will not know where to look.
+- **Value:** Hotels handle disputes on their own and on time. Support can answer hotel questions without the dev team.
+- **Owner:** Stanislav Lysokon. Depends on US 2 to 6 (screens and texts must be final).
+- **AC:**
+  1. Hotel guide covers what a chargeback is, deadlines per card scheme (Visa 18 days, Mastercard 40 days, American Express 14 days for a request for information), and what happens if the deadline is missed.
+  2. Hotel guide explains PMS notices and how to subscribe employees to dispute emails (US 2).
+  3. Hotel guide explains the Disputes screen, how to accept or defend a dispute, which documents to upload, and where the chargeback and fee show in payouts (US 3, 4, 5).
+  4. Support guide explains the dispute list in Central Admin, filters and export, and how to answer typical hotel questions such as a lower payout (US 6).
+  5. Both guides use the format of the existing Adyen user guides in the Drive folder Adyen, with screenshots from the Adyen test environment.
+  6. Jan reviews both guides before release.
+  7. Guides are saved in the Drive folder Adyen, linked in register case 10, and Support gets a short walkthrough.
