@@ -127,20 +127,20 @@
 
 ### US 4. Accept or defend a dispute in PMS
 - **Story:** As a hotel user, I want to accept or defend a dispute and upload supporting documents directly in the PMS, so that I can manage dispute process in one place.
-- **Problem:** The hotel handles its own disputes in PMS (decision 10.11), but defending is only possible in Adyen Customer Area.
-- **Value:** Hotels can win disputes on time from the tool they use every day.
+- **Problem:** Hotels cannot defend disputes or upload supporting documents directly in PMS.
+- **Value:** Hotels can win disputes on time from PMS.
 - **Reference:** [Disputes API](https://docs.adyen.com/risk-management/disputes-api)
 - **AC:**
   1. The user can accept a dispute or pick a defense reason from the list Adyen returns.
-  2. The user can upload the documents Adyen asks for (for example invoice, reservation, terms). Files follow Adyen limits on type and size.
+  2. The user can upload the documents Adyen asks for (invoice, reservation, terms). Files follow Adyen limits on type and size.
   3. The defense is sent to Adyen before the deadline and the result is shown on the dispute.
   4. After the deadline, accept and defend are blocked with a clear message.
-  5. Built with Adyen Dispute components if US 0 confirms they can be used.
+  5. Built with Adyen Dispute components.
 
 ### US 5. Chargebacks in hotel payouts and reports in PMS
 - **Story:** As a hotel, I want chargebacks, reversals and fees visible in PMS, so that I understand why a payout is lower.
 - **Problem:** The chargeback amount is taken from the hotel balance account. If it is missing in PMS, the hotel sees a lower payout without explanation.
-- **Value:** The hotel can match its payout with Adyen without asking Support.
+- **Value:** The hotel can match its payout in PMS without asking Support.
 - **Reference:** [Balance Platform Payout report](https://docs.adyen.com/platforms/reports-and-fees/payout-report/)
 - **AC:**
   1. The chargeback and the reversal are shown in the payment history of the reservation.
@@ -148,28 +148,24 @@
   3. The chargeback fee is shown as a separate line.
   4. PMS payout totals match the Adyen payout report for the same period.
 
-### US 6. Disputes and chargebacks in Central Admin for Support
+### US 6. Disputes and chargebacks in Central Admin
 - **Story:** As VIPS Support, I want all disputes and chargebacks of all hotels in Central Admin, with export, so that I can answer a hotel and VIPS totals and invoices are correct.
-- **Problem:** Support does not work in PMS and gets no dispute notices (decision 10.11). If chargebacks are missing in Central Admin, VIPS totals will not match Adyen (see cases 4 and 9).
-- **Value:** Support finds any dispute fast without access to Adyen Customer Area, and VIPS invoices to hotels are correct.
+- **Problem:** Support does not work in PMS and gets no dispute notices. 
+- **Value:** Support can quickly find any dispute without needing access to external systems, and VIPS invoices to hotels are correct.
 - **Reference:** [Balance Platform Accounting Report](https://docs.adyen.com/marketplaces/reports-and-fees/balance-platform-accounting-report)
 - **AC:**
   1. Central Admin has a list of all disputes for all hotels with hotel, date, reservation, PSP Reference, amount, reason, stage, deadline and status.
   2. Filter by hotel, status and period.
   3. Export of the filtered list to Excel (xlsx or csv).
   4. Central Admin totals include chargebacks, reversals and fees and match the Adyen report for the same period.
-  5. If Adyen does not take the chargeback fee from the hotel balance account (US 0), the fee is added to the VIPS invoice to the hotel.
 
-### US 7. User guides for hotels and Support (owner Stas)
+### US 7. User guides for hotels and Support
 - **Story:** As a hotel user and as VIPS Support, I want a short guide on chargebacks, so that I know what to do when a dispute comes in and before the deadline.
-- **Problem:** Chargebacks are new for hotels and Support. Nothing is documented today (Rama, 05.11). Without a guide, hotels will miss deadlines and Support will not know where to look.
+- **Problem:** Chargebacks are new for hotels and Support. Without a guide, hotels will miss deadlines and Support will not know where to look.
 - **Value:** Hotels handle disputes on their own and on time. Support can answer hotel questions without the dev team.
-- **Owner:** Stanislav Lysokon. Depends on US 2 to 6 (screens and texts must be final).
 - **AC:**
   1. Hotel guide covers what a chargeback is, deadlines per card scheme (Visa 18 days, Mastercard 40 days, American Express 14 days for a request for information), and what happens if the deadline is missed.
-  2. Hotel guide explains PMS notices and how to subscribe employees to dispute emails (US 2).
-  3. Hotel guide explains the Disputes screen, how to accept or defend a dispute, which documents to upload, and where the chargeback and fee show in payouts (US 3, 4, 5).
-  4. Support guide explains the dispute list in Central Admin, filters and export, and how to answer typical hotel questions such as a lower payout (US 6).
-  5. Both guides use the format of the existing Adyen user guides in the Drive folder Adyen, with screenshots from the Adyen test environment.
-  6. Jan reviews both guides before release.
-  7. Guides are saved in the Drive folder Adyen, linked in register case 10, and Support gets a short walkthrough.
+  2. Hotel guide explains PMS notices and how to subscribe employees to dispute emails.
+  3. Hotel guide explains the Disputes screen, how to accept or defend a dispute, which documents to upload, and where the chargeback and fee show in payouts.
+  4. Support guide explains the dispute list in Central Admin, filters and export, and how to answer typical hotel questions such as a lower payout.
+  5. Both guides use the format of the existing Adyen user guides.
