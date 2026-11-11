@@ -89,7 +89,7 @@ Goal to receive Adyen dispute events and notify the hotel in PMS and by email. L
   5. A test chargeback is created in the test environment. Received webhooks are saved as examples.
   6. Chargeback lines from the Adyen payout report are present in AdyenPayoutReportDetails after the test.
 
-### US 1. Receive and store dispute events
+### US 27310. Receive and store dispute events
 - **Story:** As VIPS, I want every Adyen dispute event stored and linked to the original payment, so that no chargeback is missed.
 - **Problem:** Today a chargeback reaches nobody in VIPS.
 - **Value:** Every dispute is in our data from the first event.
