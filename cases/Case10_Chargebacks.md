@@ -151,7 +151,7 @@ Goal to receive Adyen dispute events and notify the hotel in PMS and by email. L
   4. After the deadline, accept and defend are blocked with a clear message.
   5. Built with Adyen Dispute components.
 
-### US 27333. Chargebacks in hotel payouts and reports in PMS
+### US 27323. Chargebacks in hotel payouts and reports in PMS
 - **Story:** As a hotel, I want chargebacks, reversals and fees visible in PMS, so that I understand why a payout is lower.
 - **Problem:** The chargeback amount is taken from the hotel balance account. If it is missing in PMS, the hotel sees a lower payout without explanation.
 - **Value:** The hotel can match its payout in PMS without asking Support.
@@ -162,7 +162,7 @@ Goal to receive Adyen dispute events and notify the hotel in PMS and by email. L
   3. The chargeback fee is shown as a separate line.
   4. PMS payout totals match the Adyen payout report for the same period.
 
-### US 6. Disputes and chargebacks in Central Admin
+### US 27324. Disputes and chargebacks in Central Admin
 - **Story:** As VIPS Support, I want all disputes and chargebacks of all hotels in Central Admin, with export, so that I can answer a hotel and VIPS totals and invoices are correct.
 - **Problem:** Support does not work in PMS and gets no dispute notices. 
 - **Value:** Support can quickly find any dispute without needing access to external systems, and VIPS invoices to hotels are correct.
