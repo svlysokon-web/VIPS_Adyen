@@ -62,6 +62,8 @@
 
 ## Feature (Azure DevOps)
 
+**Feature 27307** ([Azure DevOps](https://dev.azure.com/fth-tenerife/VIPS%20Cloud%20PMS/_workitems/edit/27307)), создана Stas 11.11.
+
 **Title:** Adyen disputes and chargebacks
 
 **Description (final, Stas 11.11):**
