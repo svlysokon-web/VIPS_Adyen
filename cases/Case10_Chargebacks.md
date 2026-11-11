@@ -139,7 +139,7 @@ Goal to receive Adyen dispute events and notify the hotel in PMS and by email. L
   4. Status updates when Adyen sends a new stage or the result.
   5. Built with Adyen Dispute components.
 
-### US 4. Accept or defend a dispute in PMS
+### US 27322. Accept or defend a dispute in PMS
 - **Story:** As a hotel user, I want to accept or defend a dispute and upload supporting documents directly in the PMS, so that I can manage dispute process in one place.
 - **Problem:** Hotels cannot defend disputes or upload supporting documents directly in PMS.
 - **Value:** Hotels can win disputes on time from PMS.
@@ -151,7 +151,7 @@ Goal to receive Adyen dispute events and notify the hotel in PMS and by email. L
   4. After the deadline, accept and defend are blocked with a clear message.
   5. Built with Adyen Dispute components.
 
-### US 5. Chargebacks in hotel payouts and reports in PMS
+### US 27333. Chargebacks in hotel payouts and reports in PMS
 - **Story:** As a hotel, I want chargebacks, reversals and fees visible in PMS, so that I understand why a payout is lower.
 - **Problem:** The chargeback amount is taken from the hotel balance account. If it is missing in PMS, the hotel sees a lower payout without explanation.
 - **Value:** The hotel can match its payout in PMS without asking Support.
