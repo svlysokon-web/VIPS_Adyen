@@ -64,11 +64,11 @@
 
 **Title:** Adyen disputes and chargebacks
 
-**Description:**
+**Description (final, Stas 11.11):**
 
-**Problem.** VIPS has no chargeback process for Adyen payments. Dispute webhooks are not enabled, so nobody is notified when a guest disputes a payment. The amount is taken from the hotel balance account and the hotel only sees a lower payout. A missed deadline means the dispute is lost.
+VIPS has no chargeback process for Adyen payments. Dispute webhooks are not enabled, so nobody is notified when a guest disputes a payment. A missed deadline means the dispute is lost.
 
-**Task.** Receive Adyen dispute events and notify the hotel in PMS and by email. Let hotels accept or defend disputes in PMS. Show chargebacks and fees in hotel payouts and in Central Admin. Covers all card payments.
+Goal to receive Adyen dispute events and notify the hotel in PMS and by email. Let hotels accept or defend disputes in PMS. Show chargebacks and fees in hotel payouts and in Central Admin. Covers all Adyen payments.
 
 ---
 
