@@ -127,7 +127,7 @@ Goal to receive Adyen dispute events and notify the hotel in PMS and by email. L
   8. If nobody is subscribed to dispute emails, hotel settings show a warning.
   9. Email texts are approved by PO.
 
-### US 3. Disputes screen in VIPS Cloud PMS
+### US 27320. Disputes screen in VIPS PMS
 - **Story:** As a hotel user, I want a Disputes screen in PMS, so that I see all disputes and their status.
 - **Problem:** Disputes are not visible to hotel managers in the PMS.
 - **Value:** The hotel sees open disputes, deadlines and results in one place.
