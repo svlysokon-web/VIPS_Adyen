@@ -76,7 +76,7 @@ Goal to receive Adyen dispute events and notify the hotel in PMS and by email. L
 
 ## User Stories (final, EN, for Azure DevOps)
 
-### US 0 . Enable dispute webhooks and check chargeback setup
+### US 27309 . Enable dispute webhooks and check chargeback setup
 - **Story:** As the dev team, we want dispute events from Adyen turned on and the chargeback setup checked, so that we build the feature on facts.
 - **Problem:** No dispute webhooks are enabled for our account. Not checked from which balance account Adyen takes the chargeback amount and the fee, and if chargeback lines reach AdyenPayoutReportDetails.
 - **Value:** We know what Adyen sends, who pays, and what we already receive, before we build screens.
@@ -85,7 +85,7 @@ Goal to receive Adyen dispute events and notify the hotel in PMS and by email. L
   1. Standard webhook has dispute events enabled in test and live. The list of enabled event codes is documented.
   2. An API credential with the dispute management role exists (needed for the Disputes API and dispute components).
   3. The chargeback amount is taken from the hotel balance account (`chargeback`).
-  4. The chargeback fee goes to the hotel balance account (`chargebackCostAllocation` checked).
+  4. The chargeback fee goes to the hotel balance account (`chargebackCostAllocation`).
   5. A test chargeback is created in the test environment. Received webhooks are saved as examples.
   6. Chargeback lines from the Adyen payout report are present in AdyenPayoutReportDetails after the test.
 
@@ -103,7 +103,7 @@ Goal to receive Adyen dispute events and notify the hotel in PMS and by email. L
   6. Works for terminals, Payment Page, Pay Link, CC and VCC.
 
 ### US 2. Dispute notifications
-- **Story:** As a hotel user, I want to see a notice in VIPS PMS and get an email as soon as a guest disputes a payment, so that we act before the deadline.
+- **User Story:** As a hotel user, I want to see a notice in VIPS PMS and get an email as soon as a guest disputes a payment, so that we act before the deadline.
 - **Problem:** Nobody is notified about a dispute today.
 - **Value:** No dispute is missed and no deadline passes because nobody saw it.
 - **Notification logic:**
