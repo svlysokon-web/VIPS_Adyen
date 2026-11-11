@@ -102,7 +102,7 @@ Goal to receive Adyen dispute events and notify the hotel in PMS and by email. L
   5. Failed processing is logged and can be retried.
   6. Works for terminals, Payment Page, Pay Link, CC and VCC.
 
-### US 2. Dispute notifications
+### US 27309. Dispute notifications
 - **User Story:** As a hotel user, I want to see a notice in VIPS PMS and get an email as soon as a guest disputes a payment, so that we act before the deadline.
 - **Problem:** Nobody is notified about a dispute today.
 - **Value:** No dispute is missed and no deadline passes because nobody saw it.
