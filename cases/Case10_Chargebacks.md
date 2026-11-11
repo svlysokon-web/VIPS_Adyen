@@ -60,6 +60,47 @@
 
 ---
 
+## Feature (Azure DevOps)
+
+**Title:** Adyen disputes and chargebacks
+
+**Description:**
+
+**Goal.** Hotels see and handle Adyen disputes in VIPS Cloud PMS before the deadline. VIPS Support sees all disputes in Central Admin.
+
+**Problem.** Nothing is built for chargebacks today and dispute webhooks are not enabled. When a guest disputes a payment, nobody in VIPS is notified. The amount is taken from the hotel balance account and the hotel only sees a lower payout. If the deadline is missed, the dispute is lost.
+
+**Value.** No dispute is missed, hotels can defend disputes on time, and payouts, Central Admin totals and VIPS invoices match Adyen.
+
+**Scope**
+- All card payments: terminals, Payment Page, Pay by Link, CC and VCC.
+- Receive and store Adyen dispute events, linked to the payment and reservation by PSP Reference.
+- Notices in PMS and emails to subscribed hotel employees. Reminder 3 days before the deadline.
+- Disputes screen in PMS. Accept or defend a dispute with documents (Adyen Dispute components).
+- Chargebacks, reversals and fees in hotel payouts and in Central Admin, with export.
+- User guides for hotels and Support.
+
+**Agreed 10.11**
+- The hotel handles the dispute itself.
+- Support gets no notices and works from the dispute list in Central Admin.
+- The chargeback amount and the Adyen fee are for the hotel. The Adyen setup for this is checked in US 0.
+
+**User stories**
+- US 0. Enable dispute webhooks and check chargeback setup
+- US 1. Receive and store dispute events
+- US 2. Dispute notifications
+- US 3. Disputes screen in VIPS Cloud PMS
+- US 4. Accept or defend a dispute in PMS
+- US 5. Chargebacks in hotel payouts and reports in PMS
+- US 6. Disputes and chargebacks in Central Admin
+- US 7. User guides for hotels and Support
+
+**Done when** US 0 to 7 are done, an end-to-end test per channel has passed in Adyen test, and the first live dispute is visible to the hotel in PMS.
+
+**References:** [Manage disputes](https://docs.adyen.com/risk-management/manage-disputes), [Dispute webhooks](https://docs.adyen.com/risk-management/disputes-api/dispute-notifications), [Split chargebacks](https://docs.adyen.com/platforms/online-payments/split-transactions/split-chargebacks)
+
+---
+
 ## User Stories (final, EN, for Azure DevOps)
 
 ### US 0 . Enable dispute webhooks and check chargeback setup
