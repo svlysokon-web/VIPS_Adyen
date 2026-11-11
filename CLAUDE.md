@@ -67,8 +67,11 @@
   (в тексте даты по-прежнему 05.09). Category «Terminals» добавлена 06.11.
 - Структура утверждена Stas 06-Nov-2026 («последняя версия»): **один лист**
   `Adyen Case Register`. Листов Actions, Summary, Patterns, Guide, Lists нет. Формул нет.
-- Колонки (14, в этом порядке): ID, Problem, Category, Priority, Status, Initiated,
-  Last update, Owner, Details, Resolution, Root cause, RCA, Next step, Blocker.
+- Колонки (15, в этом порядке): ID, Problem, Category, Priority, Status, Initiated,
+  Last update, Owner, User stories, Details, Resolution, Root cause, RCA, Next step, Blocker.
+  - User stories (добавлена 11.11 по просьбе Stas) — номера work items в Azure DevOps по
+    кейсу («US 27124», «Solvers 27119»), каждый со ссылкой на work item. Пусто, если US ещё
+    не заведена. Номера US в Details не дублируй.
   - Problem — короткий симптом («что не так»), не причина.
   - Details — только факты, которых нет в Problem (отель, суммы, номера US/Solvers,
     даты). Не повторяй Problem.
@@ -136,7 +139,8 @@
 - Клиент: Tessa Meerkerk (FreeTime Hospitality; аккаунт Adyen зарегистрирован на
   FreeTime Hospitality).
 - Трекер: user stories (например US 27124) и Solvers cases (например 27119); спринты
-  75–77, версия v77. Базовый URL трекера пока неизвестен.
+  75–77, версия v77. Azure DevOps: организация `fth-tenerife`, проект `VIPS Cloud PMS`.
+  Ссылка на work item: https://dev.azure.com/fth-tenerife/VIPS%20Cloud%20PMS/_workitems/edit/<номер>
 
 ## Структура Drive-папки (снимок на 2026-11-05)
 
