@@ -173,7 +173,7 @@ Goal to receive Adyen dispute events and notify the hotel in PMS and by email. L
   3. Export of the filtered list to Excel (xlsx or csv).
   4. Central Admin totals include chargebacks, reversals and fees and match the Adyen report for the same period.
 
-### US 7. User guides for hotels and Support
+### US 27325. User guides for hotels and Support
 - **Story:** As a hotel user and as VIPS Support, I want a short guide on chargebacks, so that I know what to do when a dispute comes in and before the deadline.
 - **Problem:** Chargebacks are new for hotels and Support. Without a guide, hotels will miss deadlines and Support will not know where to look.
 - **Value:** Hotels handle disputes on their own and on time. Support can answer hotel questions without the dev team.
